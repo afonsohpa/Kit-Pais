@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit Dia dos Pais — Faça seu pedido</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Dancing+Script:wght@600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --navy: #0B1E3B;
+    --navy-deep: #01142C;
+    --gold: #A2692F;
+    --gold-light: #C9974F;
+    --gold-pale: #E4C79A;
+    --cream: #F0EBE7;
+    --cream-2: #F7F3EF;
+    --ink: #1A1A1A;
+    --white: #FFFFFF;
+    --success: #25D366;
+    --danger: #C0392B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--cream-2); color:var(--ink);
+    font-family:'Poppins',sans-serif; line-height:1.55;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 80px;}
+
+  /* HEADER */
+  header.top{
+    background:var(--navy-deep); color:var(--cream); padding:16px 24px; text-align:center;
+    font-weight:700; letter-spacing:1px; font-size:.85rem;
+  }
+  header.top span{color:var(--gold-light);}
+
+  /* HERO */
+  .hero{
+    background:var(--cream); color:var(--navy-deep);
+    padding:40px 40px 48px; border-radius:0 0 24px 24px; margin-bottom:40px;
+    text-align:center; position:relative; overflow:hidden;
+    border-bottom:3px solid var(--gold);
+  }
+  .hero::after{
+    content:"";position:absolute; right:-60px; top:-60px; width:260px;height:260px;
+    background:radial-gradient(circle, rgba(162,105,47,.18), transparent 70%);
+  }
+  .hero .tag{
+    display:inline-block; background:var(--navy-deep); color:var(--cream);
+    font-weight:700; font-size:.72rem; letter-spacing:1.5px; text-transform:uppercase;
+    padding:6px 16px; border-radius:20px; margin-bottom:18px;
+  }
+  .hero-logo{max-width:420px; width:100%; height:auto; display:block; margin:0 auto 8px; position:relative;}
+  .hero p.script{font-family:'Dancing Script',cursive; font-weight:700; color:var(--gold); font-size:1.4rem; margin:0 0 20px;}
+  .hero .cta-scroll{
+    display:inline-block; background:var(--gold); color:var(--white); font-weight:700; font-size:.85rem;
+    padding:12px 26px; border-radius:30px; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  html{scroll-behavior:smooth;}
+
+  /* PRODUCT SECTION */
+  .product-grid{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:36px; align-items:start; margin-bottom:56px;
+  }
+  @media (max-width:800px){ .product-grid{grid-template-columns:1fr;} }
+  .product-image{
+    border-radius:18px; overflow:hidden; box-shadow:0 8px 26px rgba(0,0,0,.15);
+  }
+  .product-image img{width:100%; display:block;}
+
+  .ribbon{
+    display:inline-block; background:var(--navy-deep); color:var(--cream);
+    font-weight:800; font-size:.85rem; letter-spacing:.5px; padding:10px 20px; border-radius:6px;
+    margin-bottom:16px;
+  }
+  .kit-list{background:var(--white); border-radius:14px; padding:22px 26px; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:24px;}
+  .kit-item{display:flex; gap:12px; align-items:flex-start; padding:9px 0; border-bottom:1px dotted #d8d2ca;}
+  .kit-item:last-child{border-bottom:none;}
+  .heart{color:var(--gold); font-size:1.05rem; line-height:1.3;}
+  .kit-item .t{font-weight:700; color:var(--navy-deep); font-size:.9rem;}
+  .kit-item .d{font-size:.8rem; color:#7a746e;}
+
+  .icon-row{display:flex; justify-content:space-between; gap:10px; text-align:center; flex-wrap:wrap; margin-bottom:24px;}
+  .icon-item{flex:1; min-width:110px;}
+  .icon-circle{
+    width:48px; height:48px; border-radius:50%; border:2px solid var(--navy-deep);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:1.2rem; color:var(--navy-deep);
+    background:var(--white);
+  }
+  .icon-item .it{font-weight:700; font-size:.72rem; color:var(--navy-deep);}
+  .icon-item .id{font-size:.68rem; color:#8a847e;}
+
+  /* PURCHASE BOX */
+  .buy-box{
+    background:var(--white); border-radius:18px; padding:28px; box-shadow:0 4px 20px rgba(0,0,0,.08);
+    position:sticky; top:24px;
+  }
+  .price-row{display:flex; align-items:baseline; gap:10px; margin-bottom:4px;}
+  .price-apenas{font-family:'Dancing Script',cursive; font-weight:700; color:var(--gold); font-size:1.2rem;}
+  .price-value{font-family:'Alfa Slab One',serif; color:var(--navy-deep); font-size:2.1rem;}
+  .price-unit{font-size:.78rem; color:#8a847e; margin-bottom:20px;}
+
+  .qty-label{font-weight:700; font-size:.85rem; color:var(--navy-deep); margin-bottom:8px; display:block;}
+  .qty-control{
+    display:flex; align-items:center; gap:0; border:2px solid var(--navy-deep); border-radius:10px;
+    width:fit-content; margin-bottom:8px; overflow:hidden;
+  }
+  .qty-control button{
+    background:var(--navy-deep); color:var(--cream); border:none; width:42px; height:42px;
+    font-size:1.2rem; cursor:pointer; font-weight:700;
+  }
+  .qty-control button:hover{background:var(--gold);}
+  .qty-control input{
+    width:56px; height:42px; border:none; text-align:center; font-weight:700; font-size:1rem;
+    color:var(--navy-deep); font-family:'Poppins',sans-serif;
+  }
+  .qty-control input:focus{outline:none;}
+
+  .total-row{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--cream); border-radius:10px; padding:14px 18px; margin:18px 0 24px;
+  }
+  .total-row .l{font-weight:600; font-size:.85rem; color:#5a544e;}
+  .total-row .v{font-family:'Alfa Slab One',serif; color:var(--navy-deep); font-size:1.5rem;}
+
+  /* OPTION SELECTORS (bebida / conserva) */
+  .option-group{margin-bottom:18px;}
+  .option-group-label{font-weight:700; font-size:.85rem; color:var(--navy-deep); margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+  .option-group-label .req{color:var(--danger); font-size:.9rem;}
+  .option-pills{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .option-pill{
+    position:relative; border:2px solid #ddd6cc; border-radius:10px; padding:12px 12px;
+    cursor:pointer; background:var(--cream-2); transition:border-color .15s, background .15s;
+  }
+  .option-pill input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer;}
+  .option-pill .ot{font-weight:700; font-size:.82rem; color:var(--navy-deep); display:block;}
+  .option-pill .od{font-size:.72rem; color:#8a847e;}
+  .option-pill.selected{border-color:var(--gold); background:#FBF3E7;}
+  .option-pill.selected::after{
+    content:"✓"; position:absolute; top:8px; right:10px; color:var(--gold); font-weight:800; font-size:.85rem;
+  }
+  .option-pill.required-err{border-color:var(--danger); background:#FBEAEA;}
+  .option-pill:focus-within{outline:2px solid var(--gold); outline-offset:2px;}
+  .option-hint{font-size:.72rem; color:#8a847e; margin-top:6px;}
+  #buyBox{scroll-margin-top:20px;}
+
+  hr.sep{border:none; border-top:1px solid #e2ddd6; margin:22px 0;}
+
+  /* FORM */
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-weight:700; font-size:.8rem; color:var(--navy-deep); margin-bottom:6px;}
+  .field input{
+    width:100%; padding:11px 14px; border:1.5px solid #ddd6cc; border-radius:8px;
+    font-family:'Poppins',sans-serif; font-size:.9rem; color:var(--ink); background:var(--cream-2);
+  }
+  .field input:focus{outline:none; border-color:var(--gold);}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .row3{display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px;}
+  @media (max-width:480px){ .row2, .row3{grid-template-columns:1fr;} }
+  .cep-wrap{position:relative;}
+  .cep-status{font-size:.72rem; margin-top:5px; min-height:14px;}
+  .cep-status.ok{color:#1f7a34;}
+  .cep-status.err{color:var(--danger);}
+  .cep-status.loading{color:#8a847e;}
+
+  .btn-submit{
+    width:100%; background:var(--success); color:var(--white); border:none; border-radius:10px;
+    padding:16px; font-weight:800; font-size:.95rem; cursor:pointer; letter-spacing:.3px;
+    display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px;
+  }
+  .btn-submit:hover{opacity:.92;}
+  .btn-submit:disabled{opacity:.5; cursor:not-allowed;}
+  .form-hint{font-size:.72rem; color:#8a847e; text-align:center; margin-top:10px;}
+  .required-err{border-color:var(--danger) !important; background:#FBEAEA !important;}
+
+  footer.foot{
+    text-align:center; color:#a19b93; font-size:.8rem; margin-top:40px; padding-top:24px; border-top:1px solid #e2ddd6;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">FRETE A CONSULTAR &nbsp;·&nbsp; PEDIDO CONFIRMADO MEDIANTE PAGAMENTO <span>(PIX, DINHEIRO OU TRANSFERÊNCIA)</span></header>
+
+<div class="hero">
+  <span class="tag">Dia dos Pais 2026</span>
+  <img src="kit-dia-dos-pais-logo.png" alt="Kit Dia dos Pais" class="hero-logo">
+  <p class="script">Sabor, carinho e bons momentos para quem sempre esteve ao seu lado!</p>
+  <a href="#buyBox" class="cta-scroll">Fazer meu pedido ↓</a>
+</div>
+
+<div class="wrap">
+  <div class="product-grid">
+
+    <!-- LEFT: IMAGE + DETAILS -->
+    <div>
+      <div class="product-image">
+        <img src="kit-dia-dos-pais-produto.png" alt="Kit Dia dos Pais">
+      </div>
+
+      <div style="height:24px;"></div>
+
+      <span class="ribbon">O KIT CONTÉM:</span>
+      <div class="kit-list">
+        <div class="kit-item"><span class="heart">♥</span><div><div class="t">1 BEBIDA</div><div class="d">Cerveja ou Suco de Uva Integral — escolha ao lado →</div></div></div>
+        <div class="kit-item"><span class="heart">♥</span><div><div class="t">1 CIABATTA</div><div class="d">artesanal</div></div></div>
+        <div class="kit-item"><span class="heart">♥</span><div><div class="t">1 PATÊ</div><div class="d">de frango</div></div></div>
+        <div class="kit-item"><span class="heart">♥</span><div><div class="t">1 AMENDOIM</div><div class="d">torrado sem pele e sem sal</div></div></div>
+        <div class="kit-item"><span class="heart">♥</span><div><div class="t">1 CONSERVA</div><div class="d">Batata ou Cebola — escolha ao lado →</div></div></div>
+        <div class="kit-item"><span class="heart">♥</span><div><div class="t">1 BANDEJA DE MDF</div><div class="d">reutilizável</div></div></div>
+      </div>
+
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon-circle">🎁</div><div class="it">EMBALAGEM ESPECIAL</div><div class="id">Com celofane e laço</div></div>
+        <div class="icon-item"><div class="icon-circle">♥</div><div class="it">SELECIONADOS</div><div class="id">Alta qualidade e sabor</div></div>
+        <div class="icon-item"><div class="icon-circle">😊</div><div class="it">IDEAL PARA SURPREENDER</div><div class="id">Celebre com quem é exemplo</div></div>
+        <div class="icon-item"><div class="icon-circle">♥</div><div class="it">FEITO PARA ENCANTAR</div><div class="id">Um presente com carinho</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: BUY BOX -->
+    <div class="buy-box" id="buyBox">
+      <div class="price-row">
+        <span class="price-apenas">Apenas</span>
+        <span class="price-value" id="unitPriceLabel">R$ 120,00</span>
+      </div>
+      <div class="price-unit">por kit &nbsp;·&nbsp; pronto para presentear</div>
+
+      <span class="qty-label">Quantidade</span>
+      <div class="qty-control">
+        <button type="button" id="qtyMinus" aria-label="Diminuir">−</button>
+        <input type="text" id="qtyInput" value="1" inputmode="numeric">
+        <button type="button" id="qtyPlus" aria-label="Aumentar">+</button>
+      </div>
+
+      <div class="total-row">
+        <span class="l">Total do pedido</span>
+        <span class="v" id="totalLabel">R$ 120,00</span>
+      </div>
+
+      <hr class="sep">
+
+      <form id="orderForm" novalidate>
+
+        <div class="option-group">
+          <div class="option-group-label">Escolha a bebida <span class="req">*</span></div>
+          <div class="option-pills" id="bebidaGroup">
+            <label class="option-pill" data-value="Cerveja Baden Baden Cristal Pilsen">
+              <input type="radio" name="bebida" value="Cerveja Baden Baden Cristal Pilsen">
+              <span class="ot">🍺 Cerveja</span>
+              <span class="od">Baden Baden Cristal Pilsen</span>
+            </label>
+            <label class="option-pill" data-value="Suco de Uva Integral">
+              <input type="radio" name="bebida" value="Suco de Uva Integral">
+              <span class="ot">🧃 Suco de Uva</span>
+              <span class="od">Integral</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <div class="option-group-label">Escolha a conserva <span class="req">*</span></div>
+          <div class="option-pills" id="conservaGroup">
+            <label class="option-pill" data-value="Batata em Conserva">
+              <input type="radio" name="conserva" value="Batata em Conserva">
+              <span class="ot">🥔 Batata</span>
+              <span class="od">em conserva</span>
+            </label>
+            <label class="option-pill" data-value="Cebola em Conserva">
+              <input type="radio" name="conserva" value="Cebola em Conserva">
+              <span class="ot">🧅 Cebola</span>
+              <span class="od">em conserva</span>
+            </label>
+          </div>
+          <div class="option-hint" id="optionsHint">Se pedir mais de 1 kit, essa escolha vale para todos os kits do pedido.</div>
+        </div>
+
+        <hr class="sep">
+
+        <div class="field">
+          <label for="nome">Nome completo <span class="req" style="color:var(--danger);">*</span></label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" required autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="telefone">Telefone / WhatsApp <span class="req" style="color:var(--danger);">*</span></label>
+          <input type="tel" id="telefone" name="telefone" placeholder="(12) 9XXXX-XXXX" inputmode="numeric" maxlength="16" required autocomplete="tel">
+        </div>
+
+        <div class="field cep-wrap">
+          <label for="cep">CEP <span class="req" style="color:var(--danger);">*</span></label>
+          <input type="text" id="cep" name="cep" placeholder="00000-000" inputmode="numeric" maxlength="9" required autocomplete="postal-code">
+          <div class="cep-status" id="cepStatus" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="row3">
+          <div class="field">
+            <label for="rua">Rua <span class="req" style="color:var(--danger);">*</span></label>
+            <input type="text" id="rua" name="rua" placeholder="Preenchido pelo CEP" required autocomplete="address-line1">
+          </div>
+          <div class="field">
+            <label for="numero">Número <span class="req" style="color:var(--danger);">*</span></label>
+            <input type="text" id="numero" name="numero" placeholder="Nº" inputmode="numeric" required autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="complemento">Complemento</label>
+            <input type="text" id="complemento" name="complemento" placeholder="Opcional" autocomplete="address-line2">
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="bairro">Bairro <span class="req" style="color:var(--danger);">*</span></label>
+            <input type="text" id="bairro" name="bairro" placeholder="Preenchido pelo CEP" required autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="cidade">Cidade / UF <span class="req" style="color:var(--danger);">*</span></label>
+            <input type="text" id="cidade" name="cidade" placeholder="Preenchido pelo CEP" required autocomplete="off">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          📲 Enviar pedido pelo WhatsApp
+        </button>
+        <div class="form-hint">Campos com <span class="req" style="color:var(--danger);">*</span> são obrigatórios. Você será redirecionado ao WhatsApp com o pedido já preenchido.</div>
+      </form>
+    </div>
+
+  </div>
+
+  <footer class="foot">Kit Dia dos Pais · Faça já o seu pedido ♥</footer>
+</div>
+
+<script>
+  const UNIT_PRICE = 120.00;
+  const WHATSAPP_NUMBER = "5512991050672"; // 12 99105-0672 com código do país
+
+  const qtyInput = document.getElementById('qtyInput');
+  const qtyMinus = document.getElementById('qtyMinus');
+  const qtyPlus = document.getElementById('qtyPlus');
+  const totalLabel = document.getElementById('totalLabel');
+
+  function formatBRL(v){
+    return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  }
+
+  function getQty(){
+    let q = parseInt(qtyInput.value, 10);
+    if(isNaN(q) || q < 1) q = 1;
+    if(q > 50) q = 50;
+    return q;
+  }
+
+  function updateTotal(){
+    const q = getQty();
+    qtyInput.value = q;
+    totalLabel.textContent = formatBRL(UNIT_PRICE * q);
+  }
+
+  qtyMinus.addEventListener('click', () => { qtyInput.value = getQty() - 1; updateTotal(); });
+  qtyPlus.addEventListener('click', () => { qtyInput.value = getQty() + 1; updateTotal(); });
+  qtyInput.addEventListener('input', updateTotal);
+  qtyInput.addEventListener('blur', updateTotal);
+  updateTotal();
+
+  // Option pills (bebida / conserva) — visual selection + clear error state
+  document.querySelectorAll('.option-pills').forEach(group => {
+    const pills = group.querySelectorAll('.option-pill');
+    pills.forEach(pill => {
+      const radio = pill.querySelector('input[type="radio"]');
+      radio.addEventListener('change', () => {
+        pills.forEach(p => p.classList.remove('selected', 'required-err'));
+        pill.classList.add('selected');
+      });
+    });
+  });
+
+  // Phone mask: (12) 99999-9999
+  const telefoneInput = document.getElementById('telefone');
+  telefoneInput.addEventListener('input', () => {
+    let v = telefoneInput.value.replace(/\D/g,'').slice(0,11);
+    if(v.length > 6){
+      v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    } else if(v.length > 2){
+      v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    } else if(v.length > 0){
+      v = `(${v}`;
+    }
+    telefoneInput.value = v;
+  });
+
+  // CEP lookup (ViaCEP)
+  const cepInput = document.getElementById('cep');
+  const cepStatus = document.getElementById('cepStatus');
+  const ruaInput = document.getElementById('rua');
+  const bairroInput = document.getElementById('bairro');
+  const cidadeInput = document.getElementById('cidade');
+
+  cepInput.addEventListener('input', () => {
+    let v = cepInput.value.replace(/\D/g,'').slice(0,8);
+    if(v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    cepInput.value = v;
+  });
+
+  cepInput.addEventListener('blur', async () => {
+    const raw = cepInput.value.replace(/\D/g,'');
+    if(raw.length !== 8){
+      if(raw.length > 0){
+        cepStatus.textContent = 'CEP incompleto.';
+        cepStatus.className = 'cep-status err';
+      }
+      return;
+    }
+    cepStatus.textContent = 'Buscando endereço...';
+    cepStatus.className = 'cep-status loading';
+    try{
+      const res = await fetch(`https://viacep.com.br/ws/${raw}/json/`);
+      const data = await res.json();
+      if(data.erro){
+        cepStatus.textContent = 'CEP não encontrado. Preencha o endereço manualmente.';
+        cepStatus.className = 'cep-status err';
+        return;
+      }
+      ruaInput.value = data.logradouro || '';
+      bairroInput.value = data.bairro || '';
+      cidadeInput.value = `${data.localidade || ''} / ${data.uf || ''}`;
+      cepStatus.textContent = 'Endereço encontrado ✓';
+      cepStatus.className = 'cep-status ok';
+      document.getElementById('numero').focus();
+    }catch(err){
+      cepStatus.textContent = 'Não foi possível buscar o CEP. Preencha manualmente.';
+      cepStatus.className = 'cep-status err';
+    }
+  });
+
+  // Form submit -> WhatsApp
+  const form = document.getElementById('orderForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let valid = true;
+    let firstInvalid = null;
+
+    // text fields
+    const fields = ['nome','telefone','cep','rua','numero','bairro','cidade'];
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if(!el.value.trim()){
+        el.classList.add('required-err');
+        valid = false;
+        if(!firstInvalid) firstInvalid = el;
+      } else {
+        el.classList.remove('required-err');
+      }
+    });
+
+    // radio groups
+    const bebida = document.querySelector('input[name="bebida"]:checked');
+    const bebidaGroup = document.getElementById('bebidaGroup');
+    if(!bebida){
+      bebidaGroup.querySelectorAll('.option-pill').forEach(p => p.classList.add('required-err'));
+      valid = false;
+      if(!firstInvalid) firstInvalid = bebidaGroup;
+    }
+
+    const conserva = document.querySelector('input[name="conserva"]:checked');
+    const conservaGroup = document.getElementById('conservaGroup');
+    if(!conserva){
+      conservaGroup.querySelectorAll('.option-pill').forEach(p => p.classList.add('required-err'));
+      valid = false;
+      if(!firstInvalid) firstInvalid = conservaGroup;
+    }
+
+    if(!valid){
+      if(firstInvalid) firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Abrindo WhatsApp...';
+
+    const qty = getQty();
+    const total = UNIT_PRICE * qty;
+    const nome = document.getElementById('nome').value.trim();
+    const telefone = document.getElementById('telefone').value.trim();
+    const cep = document.getElementById('cep').value.trim();
+    const rua = document.getElementById('rua').value.trim();
+    const numero = document.getElementById('numero').value.trim();
+    const complemento = document.getElementById('complemento').value.trim();
+    const bairro = document.getElementById('bairro').value.trim();
+    const cidade = document.getElementById('cidade').value.trim();
+
+    const enderecoCompleto = `${rua}, ${numero}${complemento ? ' - ' + complemento : ''} - ${bairro} - ${cidade} - CEP: ${cep}`;
+
+    const msg =
+`Olá! Quero fazer um pedido do *Kit Dia dos Pais* 🎁
+
+*Quantidade:* ${qty}
+*Bebida:* ${bebida.value}
+*Conserva:* ${conserva.value}
+*Total:* ${formatBRL(total)}
+
+*Nome:* ${nome}
+*Telefone:* ${telefone}
+*Endereço de entrega:*
+${enderecoCompleto}
+
+Aguardo confirmação do pedido e da taxa de entrega. Obrigado!`;
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '📲 Enviar pedido pelo WhatsApp';
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>

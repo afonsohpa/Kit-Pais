@@ -175,6 +175,26 @@
   }
   .btn-add-kit:hover{background:#FBF3E7;}
 
+  /* PIX PAYMENT BOX */
+  .pix-box{
+    background:var(--cream); border:1.5px dashed var(--gold); border-radius:10px;
+    padding:14px 16px; margin-bottom:22px;
+  }
+  .pix-label{font-weight:700; font-size:.8rem; color:var(--navy-deep); margin-bottom:9px; display:flex; align-items:center; gap:6px;}
+  .pix-row{display:flex; gap:8px; align-items:center;}
+  .pix-key{
+    flex:1; background:var(--white); border:1.5px solid #ddd6cc; border-radius:8px; padding:9px 12px;
+    font-size:.8rem; color:var(--ink); font-family:'Courier New',monospace; overflow-x:auto;
+    white-space:nowrap; min-width:0;
+  }
+  .pix-copy-btn{
+    background:var(--gold); color:var(--white); border:none; border-radius:8px; padding:9px 14px;
+    font-weight:700; font-size:.76rem; cursor:pointer; white-space:nowrap; flex-shrink:0;
+  }
+  .pix-copy-btn:hover{opacity:.9;}
+  .pix-copy-btn.copied{background:var(--success);}
+  .pix-hint{font-size:.7rem; color:#8a847e; margin-top:8px;}
+
   hr.sep{border:none; border-top:1px solid #e2ddd6; margin:22px 0;}
 
   /* FORM */
@@ -302,6 +322,15 @@
           <span class="v" id="totalLabel">R$ 120,00</span>
         </div>
 
+        <div class="pix-box">
+          <div class="pix-label">💳 Pagamento via PIX</div>
+          <div class="pix-row">
+            <span class="pix-key" id="pixKey">micheliferreira253@gmail.com</span>
+            <button type="button" class="pix-copy-btn" id="pixCopyBtn">Copiar chave</button>
+          </div>
+          <div class="pix-hint">Copie a chave, faça o PIX e envie o comprovante junto com o pedido no WhatsApp.</div>
+        </div>
+
         <hr class="sep">
 
         <div class="field">
@@ -361,7 +390,32 @@
 <script>
   const UNIT_PRICE = 120.00;
   const WHATSAPP_NUMBER = "5512991050672"; // 12 99105-0672 com código do país
+  const PIX_KEY = "micheliferreira253@gmail.com";
   const MAX_KITS = 10;
+
+  // PIX copy-to-clipboard
+  const pixCopyBtn = document.getElementById('pixCopyBtn');
+  const pixKeyEl = document.getElementById('pixKey');
+  pixCopyBtn.addEventListener('click', async () => {
+    const key = pixKeyEl.textContent.trim();
+    try{
+      await navigator.clipboard.writeText(key);
+    }catch(err){
+      const range = document.createRange();
+      range.selectNodeContents(pixKeyEl);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      document.execCommand('copy');
+      sel.removeAllRanges();
+    }
+    pixCopyBtn.textContent = 'Copiado ✓';
+    pixCopyBtn.classList.add('copied');
+    setTimeout(() => {
+      pixCopyBtn.textContent = 'Copiar chave';
+      pixCopyBtn.classList.remove('copied');
+    }, 2000);
+  });
 
   const totalLabel = document.getElementById('totalLabel');
   const kitsContainer = document.getElementById('kitsContainer');
@@ -594,6 +648,8 @@ ${kitsList}
 *Telefone:* ${telefone}
 *Endereço de entrega:*
 ${enderecoCompleto}
+
+*Pagamento via PIX:* ${PIX_KEY}
 
 Aguardo confirmação do pedido e da taxa de entrega. Obrigado!`;
 

@@ -41,6 +41,7 @@
     --danger: #C0392B;
   }
   *{box-sizing:border-box;}
+  html, body{overflow-x:hidden; width:100%;}
   body{
     margin:0; background:var(--cream-2); color:var(--ink);
     font-family:'Poppins',sans-serif; line-height:1.55;
@@ -54,6 +55,12 @@
     font-weight:700; letter-spacing:1px; font-size:.85rem;
   }
   header.top span{color:var(--gold-light);}
+  header.top .sep{display:inline;}
+
+  @media (max-width:600px){
+    header.top{font-size:.68rem; padding:10px 14px; line-height:1.6;}
+    header.top .sep{display:block; height:2px;}
+  }
 
   /* HERO */
   .hero{
@@ -101,8 +108,8 @@
   .kit-item .t{font-weight:700; color:var(--navy-deep); font-size:.9rem;}
   .kit-item .d{font-size:.8rem; color:#7a746e;}
 
-  .icon-row{display:flex; justify-content:space-between; gap:10px; text-align:center; flex-wrap:wrap; margin-bottom:24px;}
-  .icon-item{flex:1; min-width:110px;}
+  .icon-row{display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; text-align:center; margin-bottom:24px;}
+  .icon-item{min-width:0;}
   .icon-circle{
     width:48px; height:48px; border-radius:50%; border:2px solid var(--navy-deep);
     display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:1.2rem; color:var(--navy-deep);
@@ -124,7 +131,7 @@
   #buyBox{scroll-margin-top:20px;}
 
   .total-row{
-    display:flex; justify-content:space-between; align-items:center;
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px 12px;
     background:var(--cream); border-radius:10px; padding:14px 18px; margin:18px 0 24px;
   }
   .total-row .l{font-weight:600; font-size:.85rem; color:#5a544e;}
@@ -181,9 +188,9 @@
     padding:14px 16px; margin-bottom:22px;
   }
   .pix-label{font-weight:700; font-size:.8rem; color:var(--navy-deep); margin-bottom:9px; display:flex; align-items:center; gap:6px;}
-  .pix-row{display:flex; gap:8px; align-items:center;}
+  .pix-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
   .pix-key{
-    flex:1; background:var(--white); border:1.5px solid #ddd6cc; border-radius:8px; padding:9px 12px;
+    flex:1 1 180px; background:var(--white); border:1.5px solid #ddd6cc; border-radius:8px; padding:9px 12px;
     font-size:.8rem; color:var(--ink); font-family:'Courier New',monospace; overflow-x:auto;
     white-space:nowrap; min-width:0;
   }
@@ -227,11 +234,24 @@
   footer.foot{
     text-align:center; color:#a19b93; font-size:.8rem; margin-top:40px; padding-top:24px; border-top:1px solid #e2ddd6;
   }
+
+  /* MOBILE ADJUSTMENTS */
+  @media (max-width:480px){
+    .wrap{padding:0 16px 60px;}
+    .hero{padding:32px 20px 36px;}
+    .hero-logo{max-width:300px;}
+    .buy-box{padding:18px;}
+    .icon-row{grid-template-columns:repeat(2, 1fr); gap:18px 10px;}
+    .price-value{font-size:1.7rem;}
+    .kit-row-fields{gap:8px;}
+    .row3{grid-template-columns:1fr 1fr; gap:10px;}
+    .row3 .field:first-child{grid-column:1/-1;}
+  }
 </style>
 </head>
 <body>
 
-<header class="top">FRETE A CONSULTAR &nbsp;·&nbsp; PEDIDO CONFIRMADO MEDIANTE PAGAMENTO <span>(PIX, DINHEIRO OU TRANSFERÊNCIA)</span></header>
+<header class="top">FRETE A CONSULTAR <span class="sep">&nbsp;·&nbsp;</span> PEDIDO CONFIRMADO MEDIANTE PAGAMENTO <span>(PIX, DINHEIRO OU TRANSFERÊNCIA)</span></header>
 
 <div class="hero">
   <span class="tag">Dia dos Pais 2026</span>

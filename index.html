@@ -101,21 +101,7 @@
   .price-value{font-family:'Alfa Slab One',serif; color:var(--navy-deep); font-size:2.1rem;}
   .price-unit{font-size:.78rem; color:#8a847e; margin-bottom:20px;}
 
-  .qty-label{font-weight:700; font-size:.85rem; color:var(--navy-deep); margin-bottom:8px; display:block;}
-  .qty-control{
-    display:flex; align-items:center; gap:0; border:2px solid var(--navy-deep); border-radius:10px;
-    width:fit-content; margin-bottom:8px; overflow:hidden;
-  }
-  .qty-control button{
-    background:var(--navy-deep); color:var(--cream); border:none; width:42px; height:42px;
-    font-size:1.2rem; cursor:pointer; font-weight:700;
-  }
-  .qty-control button:hover{background:var(--gold);}
-  .qty-control input{
-    width:56px; height:42px; border:none; text-align:center; font-weight:700; font-size:1rem;
-    color:var(--navy-deep); font-family:'Poppins',sans-serif;
-  }
-  .qty-control input:focus{outline:none;}
+  #buyBox{scroll-margin-top:20px;}
 
   .total-row{
     display:flex; justify-content:space-between; align-items:center;
@@ -124,26 +110,50 @@
   .total-row .l{font-weight:600; font-size:.85rem; color:#5a544e;}
   .total-row .v{font-family:'Alfa Slab One',serif; color:var(--navy-deep); font-size:1.5rem;}
 
-  /* OPTION SELECTORS (bebida / conserva) */
-  .option-group{margin-bottom:18px;}
-  .option-group-label{font-weight:700; font-size:.85rem; color:var(--navy-deep); margin-bottom:8px; display:flex; align-items:center; gap:6px;}
-  .option-group-label .req{color:var(--danger); font-size:.9rem;}
-  .option-pills{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .option-pill{
-    position:relative; border:2px solid #ddd6cc; border-radius:10px; padding:12px 12px;
-    cursor:pointer; background:var(--cream-2); transition:border-color .15s, background .15s;
+  /* KIT BUILDER (multiple kits, each with its own options) */
+  .kits-label{font-weight:700; font-size:.85rem; color:var(--navy-deep); margin-bottom:10px; display:block;}
+  #kitsContainer{display:flex; flex-direction:column; gap:14px; margin-bottom:12px;}
+  .kit-row{
+    border:1.5px solid #e2ddd6; border-radius:12px; padding:16px; background:var(--cream-2);
+    position:relative;
   }
-  .option-pill input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer;}
-  .option-pill .ot{font-weight:700; font-size:.82rem; color:var(--navy-deep); display:block;}
-  .option-pill .od{font-size:.72rem; color:#8a847e;}
-  .option-pill.selected{border-color:var(--gold); background:#FBF3E7;}
-  .option-pill.selected::after{
-    content:"✓"; position:absolute; top:8px; right:10px; color:var(--gold); font-weight:800; font-size:.85rem;
+  .kit-row.required-err{border-color:var(--danger); background:#FBEAEA;}
+  .kit-row-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .kit-row-title{font-weight:800; font-size:.82rem; color:var(--navy-deep); text-transform:uppercase; letter-spacing:.4px;}
+  .kit-remove{
+    background:none; border:none; color:#a19b93; font-size:1rem; cursor:pointer; line-height:1;
+    padding:4px 6px; border-radius:6px;
   }
-  .option-pill.required-err{border-color:var(--danger); background:#FBEAEA;}
-  .option-pill:focus-within{outline:2px solid var(--gold); outline-offset:2px;}
-  .option-hint{font-size:.72rem; color:#8a847e; margin-top:6px;}
-  #buyBox{scroll-margin-top:20px;}
+  .kit-remove:hover{color:var(--danger); background:#FBEAEA;}
+  .kit-row-fields{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .kit-field{display:flex; flex-direction:column; gap:5px;}
+  .kit-field label{font-size:.72rem; font-weight:700; color:#7a746e;}
+  .kit-field select{
+    width:100%; padding:9px 10px; border:1.5px solid #ddd6cc; border-radius:8px;
+    font-family:'Poppins',sans-serif; font-size:.82rem; color:var(--ink); background:var(--white);
+  }
+  .kit-field select:focus{outline:none; border-color:var(--gold);}
+  .kit-field select.required-err{border-color:var(--danger); background:#FBEAEA;}
+  .kit-qty-field{grid-column:1/-1;}
+  .kit-qty-control{
+    display:flex; align-items:center; gap:0; border:1.5px solid var(--navy-deep); border-radius:8px;
+    width:fit-content; overflow:hidden;
+  }
+  .kit-qty-control button{
+    background:var(--navy-deep); color:var(--cream); border:none; width:32px; height:32px;
+    font-size:1rem; cursor:pointer; font-weight:700;
+  }
+  .kit-qty-control button:hover{background:var(--gold);}
+  .kit-qty-control input{
+    width:44px; height:32px; border:none; text-align:center; font-weight:700; font-size:.85rem;
+    color:var(--navy-deep); font-family:'Poppins',sans-serif;
+  }
+  .kit-qty-control input:focus{outline:none;}
+  .btn-add-kit{
+    width:100%; background:none; border:2px dashed var(--gold); color:var(--gold); border-radius:10px;
+    padding:11px; font-weight:700; font-size:.82rem; cursor:pointer; margin-bottom:6px;
+  }
+  .btn-add-kit:hover{background:#FBF3E7;}
 
   hr.sep{border:none; border-top:1px solid #e2ddd6; margin:22px 0;}
 
@@ -226,53 +236,50 @@
       </div>
       <div class="price-unit">por kit &nbsp;·&nbsp; pronto para presentear</div>
 
-      <span class="qty-label">Quantidade</span>
-      <div class="qty-control">
-        <button type="button" id="qtyMinus" aria-label="Diminuir">−</button>
-        <input type="text" id="qtyInput" value="1" inputmode="numeric">
-        <button type="button" id="qtyPlus" aria-label="Aumentar">+</button>
-      </div>
-
-      <div class="total-row">
-        <span class="l">Total do pedido</span>
-        <span class="v" id="totalLabel">R$ 120,00</span>
-      </div>
-
       <hr class="sep">
 
       <form id="orderForm" novalidate>
 
-        <div class="option-group">
-          <div class="option-group-label">Escolha a bebida <span class="req">*</span></div>
-          <div class="option-pills" id="bebidaGroup">
-            <label class="option-pill" data-value="Cerveja Baden Baden Cristal Pilsen">
-              <input type="radio" name="bebida" value="Cerveja Baden Baden Cristal Pilsen">
-              <span class="ot">🍺 Cerveja</span>
-              <span class="od">Baden Baden Cristal Pilsen</span>
-            </label>
-            <label class="option-pill" data-value="Suco de Uva Integral">
-              <input type="radio" name="bebida" value="Suco de Uva Integral">
-              <span class="ot">🧃 Suco de Uva</span>
-              <span class="od">Integral</span>
-            </label>
+        <span class="kits-label">Monte seu pedido <span style="color:var(--danger);">*</span></span>
+        <div id="kitsContainer">
+          <div class="kit-row" data-kit-index="1">
+            <div class="kit-row-header">
+              <span class="kit-row-title">Kit 1</span>
+              <button type="button" class="kit-remove" aria-label="Remover kit" style="display:none;">✕ remover</button>
+            </div>
+            <div class="kit-row-fields">
+              <div class="kit-field">
+                <label>Bebida</label>
+                <select class="kit-bebida" required>
+                  <option value="" disabled selected>Selecione</option>
+                  <option value="Cerveja Baden Baden Cristal Pilsen">🍺 Cerveja Baden Baden Cristal Pilsen</option>
+                  <option value="Suco de Uva Integral">🧃 Suco de Uva Integral</option>
+                </select>
+              </div>
+              <div class="kit-field">
+                <label>Conserva</label>
+                <select class="kit-conserva" required>
+                  <option value="" disabled selected>Selecione</option>
+                  <option value="Batata em Conserva">🥔 Batata em Conserva</option>
+                  <option value="Cebola em Conserva">🧅 Cebola em Conserva</option>
+                </select>
+              </div>
+              <div class="kit-field kit-qty-field">
+                <label>Quantidade deste kit</label>
+                <div class="kit-qty-control">
+                  <button type="button" class="kit-qty-minus" aria-label="Diminuir">−</button>
+                  <input type="text" class="kit-qty-input" value="1" inputmode="numeric">
+                  <button type="button" class="kit-qty-plus" aria-label="Aumentar">+</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        <button type="button" id="addKitBtn" class="btn-add-kit">+ Adicionar outro kit (com opções diferentes)</button>
 
-        <div class="option-group">
-          <div class="option-group-label">Escolha a conserva <span class="req">*</span></div>
-          <div class="option-pills" id="conservaGroup">
-            <label class="option-pill" data-value="Batata em Conserva">
-              <input type="radio" name="conserva" value="Batata em Conserva">
-              <span class="ot">🥔 Batata</span>
-              <span class="od">em conserva</span>
-            </label>
-            <label class="option-pill" data-value="Cebola em Conserva">
-              <input type="radio" name="conserva" value="Cebola em Conserva">
-              <span class="ot">🧅 Cebola</span>
-              <span class="od">em conserva</span>
-            </label>
-          </div>
-          <div class="option-hint" id="optionsHint">Se pedir mais de 1 kit, essa escolha vale para todos os kits do pedido.</div>
+        <div class="total-row">
+          <span class="l">Total do pedido</span>
+          <span class="v" id="totalLabel">R$ 120,00</span>
         </div>
 
         <hr class="sep">
@@ -334,45 +341,86 @@
 <script>
   const UNIT_PRICE = 120.00;
   const WHATSAPP_NUMBER = "5512991050672"; // 12 99105-0672 com código do país
+  const MAX_KITS = 10;
 
-  const qtyInput = document.getElementById('qtyInput');
-  const qtyMinus = document.getElementById('qtyMinus');
-  const qtyPlus = document.getElementById('qtyPlus');
   const totalLabel = document.getElementById('totalLabel');
+  const kitsContainer = document.getElementById('kitsContainer');
+  const addKitBtn = document.getElementById('addKitBtn');
+  let kitCounter = 1;
 
   function formatBRL(v){
     return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
   }
 
-  function getQty(){
-    let q = parseInt(qtyInput.value, 10);
+  function getKitQty(row){
+    const input = row.querySelector('.kit-qty-input');
+    let q = parseInt(input.value, 10);
     if(isNaN(q) || q < 1) q = 1;
     if(q > 50) q = 50;
+    input.value = q;
     return q;
   }
 
   function updateTotal(){
-    const q = getQty();
-    qtyInput.value = q;
-    totalLabel.textContent = formatBRL(UNIT_PRICE * q);
+    let total = 0;
+    kitsContainer.querySelectorAll('.kit-row').forEach(row => {
+      total += UNIT_PRICE * getKitQty(row);
+    });
+    totalLabel.textContent = formatBRL(total);
   }
 
-  qtyMinus.addEventListener('click', () => { qtyInput.value = getQty() - 1; updateTotal(); });
-  qtyPlus.addEventListener('click', () => { qtyInput.value = getQty() + 1; updateTotal(); });
-  qtyInput.addEventListener('input', updateTotal);
-  qtyInput.addEventListener('blur', updateTotal);
+  function updateKitNumbersAndRemoveButtons(){
+    const rows = kitsContainer.querySelectorAll('.kit-row');
+    rows.forEach((row, i) => {
+      row.querySelector('.kit-row-title').textContent = `Kit ${i + 1}`;
+      row.querySelector('.kit-remove').style.display = rows.length > 1 ? 'inline-block' : 'none';
+    });
+    addKitBtn.style.display = rows.length >= MAX_KITS ? 'none' : 'block';
+  }
+
+  function wireKitRow(row){
+    row.querySelector('.kit-qty-minus').addEventListener('click', () => {
+      const input = row.querySelector('.kit-qty-input');
+      input.value = getKitQty(row) - 1;
+      updateTotal();
+    });
+    row.querySelector('.kit-qty-plus').addEventListener('click', () => {
+      const input = row.querySelector('.kit-qty-input');
+      input.value = getKitQty(row) + 1;
+      updateTotal();
+    });
+    row.querySelector('.kit-qty-input').addEventListener('input', updateTotal);
+    row.querySelector('.kit-qty-input').addEventListener('blur', updateTotal);
+    row.querySelectorAll('select').forEach(sel => {
+      sel.addEventListener('change', () => sel.classList.remove('required-err'));
+    });
+    row.querySelector('.kit-remove').addEventListener('click', () => {
+      row.remove();
+      updateKitNumbersAndRemoveButtons();
+      updateTotal();
+    });
+  }
+
+  // Wire the initial kit row
+  kitsContainer.querySelectorAll('.kit-row').forEach(wireKitRow);
+  updateKitNumbersAndRemoveButtons();
   updateTotal();
 
-  // Option pills (bebida / conserva) — visual selection + clear error state
-  document.querySelectorAll('.option-pills').forEach(group => {
-    const pills = group.querySelectorAll('.option-pill');
-    pills.forEach(pill => {
-      const radio = pill.querySelector('input[type="radio"]');
-      radio.addEventListener('change', () => {
-        pills.forEach(p => p.classList.remove('selected', 'required-err'));
-        pill.classList.add('selected');
-      });
-    });
+  addKitBtn.addEventListener('click', () => {
+    const rows = kitsContainer.querySelectorAll('.kit-row');
+    if(rows.length >= MAX_KITS) return;
+    kitCounter++;
+    const template = kitsContainer.querySelector('.kit-row');
+    const newRow = template.cloneNode(true);
+    newRow.dataset.kitIndex = kitCounter;
+    newRow.querySelectorAll('select').forEach(sel => { sel.value = ''; sel.classList.remove('required-err'); });
+    newRow.querySelector('.kit-qty-input').value = '1';
+    newRow.classList.remove('required-err');
+    kitsContainer.appendChild(newRow);
+    wireKitRow(newRow);
+    updateKitNumbersAndRemoveButtons();
+    updateTotal();
+    newRow.scrollIntoView({behavior:'smooth', block:'nearest'});
   });
 
   // Phone mask: (12) 99999-9999
@@ -456,22 +504,38 @@
       }
     });
 
-    // radio groups
-    const bebida = document.querySelector('input[name="bebida"]:checked');
-    const bebidaGroup = document.getElementById('bebidaGroup');
-    if(!bebida){
-      bebidaGroup.querySelectorAll('.option-pill').forEach(p => p.classList.add('required-err'));
-      valid = false;
-      if(!firstInvalid) firstInvalid = bebidaGroup;
-    }
-
-    const conserva = document.querySelector('input[name="conserva"]:checked');
-    const conservaGroup = document.getElementById('conservaGroup');
-    if(!conserva){
-      conservaGroup.querySelectorAll('.option-pill').forEach(p => p.classList.add('required-err'));
-      valid = false;
-      if(!firstInvalid) firstInvalid = conservaGroup;
-    }
+    // kit rows: each must have bebida + conserva selected
+    const kitRows = kitsContainer.querySelectorAll('.kit-row');
+    const kits = [];
+    kitRows.forEach(row => {
+      const bebidaSel = row.querySelector('.kit-bebida');
+      const conservaSel = row.querySelector('.kit-conserva');
+      let rowValid = true;
+      if(!bebidaSel.value){
+        bebidaSel.classList.add('required-err');
+        rowValid = false;
+      } else {
+        bebidaSel.classList.remove('required-err');
+      }
+      if(!conservaSel.value){
+        conservaSel.classList.add('required-err');
+        rowValid = false;
+      } else {
+        conservaSel.classList.remove('required-err');
+      }
+      if(!rowValid){
+        row.classList.add('required-err');
+        valid = false;
+        if(!firstInvalid) firstInvalid = row;
+      } else {
+        row.classList.remove('required-err');
+        kits.push({
+          bebida: bebidaSel.value,
+          conserva: conservaSel.value,
+          qty: getKitQty(row)
+        });
+      }
+    });
 
     if(!valid){
       if(firstInvalid) firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
@@ -481,8 +545,8 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Abrindo WhatsApp...';
 
-    const qty = getQty();
-    const total = UNIT_PRICE * qty;
+    const totalQty = kits.reduce((sum, k) => sum + k.qty, 0);
+    const total = kits.reduce((sum, k) => sum + (UNIT_PRICE * k.qty), 0);
     const nome = document.getElementById('nome').value.trim();
     const telefone = document.getElementById('telefone').value.trim();
     const cep = document.getElementById('cep').value.trim();
@@ -494,12 +558,16 @@
 
     const enderecoCompleto = `${rua}, ${numero}${complemento ? ' - ' + complemento : ''} - ${bairro} - ${cidade} - CEP: ${cep}`;
 
+    const kitsList = kits.map((k, i) =>
+      `Kit ${i + 1}: ${k.qty}x — Bebida: ${k.bebida} | Conserva: ${k.conserva}`
+    ).join('\n');
+
     const msg =
 `Olá! Quero fazer um pedido do *Kit Dia dos Pais* 🎁
 
-*Quantidade:* ${qty}
-*Bebida:* ${bebida.value}
-*Conserva:* ${conserva.value}
+${kitsList}
+
+*Total de kits:* ${totalQty}
 *Total:* ${formatBRL(total)}
 
 *Nome:* ${nome}
